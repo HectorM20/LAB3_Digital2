@@ -1,32 +1,45 @@
-# Prerequisites
-*.d
+# Archivos de salida binarios comunes
+*.eep
+*.elf
+*.hex
+*.map
+*.lss
+*.srec
+*.sym
+*.bin
+*.lst
 
-# Compiled Object files
-*.slo
-*.lo
+# Archivos intermedios de compilación
 *.o
 *.obj
+*.d
+*.dep
+*.tmp
 
-# Precompiled Headers
-*.gch
-*.pch
+# Carpetas de build de Microchip Studio o Atmel Studio
+**/Debug/
+**/Release/
+*.aps
+*.bak
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Archivos temporales de proyecto
+*.log
+*.suo
+*.ncb
+*.user
+*.plg
+*.sdf
+*.opensdf
+*.VC.db
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
+# Archivos generados automáticamente
+*.mk
 *.a
 *.lib
+*.smod
+*.mod
 
-# Executables
-*.exe
-*.out
-*.app
+# Sistema de control de versiones
+*.DS_Store
+Thumbs.db
+

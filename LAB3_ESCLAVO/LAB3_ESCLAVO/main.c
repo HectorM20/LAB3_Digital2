@@ -15,13 +15,16 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
-
 #include "adc/adc.h"
 #include "spi_slave/spi_slave.h"
 
-//Prototipos
+// Prototipos
 void setup(void);
 void mostrar_en_leds(uint8_t valor);
+
+// Variables globales
+uint8_t mostrar_leds = 0;
+uint8_t valor_leds = 0;
 
 int main(void)
 {
@@ -32,9 +35,11 @@ int main(void)
 
 	while (1)
 	{
+		// Leer valores de los potenciómetros
 		val1 = adc_read(6);
 		val2 = adc_read(7);
 
+		// Ver si el maestro envía un comando
 		comando = spi_slave_receive();
 
 		if (comando == 0xAA)
@@ -48,28 +53,35 @@ int main(void)
 		}
 		else if (comando == 0xCC)
 		{
-			uint8_t valor = spi_slave_receive();
-			mostrar_en_leds(valor);
+			valor_leds = spi_slave_receive();  // Guardar el nuevo valor
+			mostrar_leds = 1;                  // Activar visualización
+		}
+
+		// Mantener LEDs encendidos
+		if (mostrar_leds)
+		{
+			mostrar_en_leds(valor_leds);
 		}
 	}
 }
 
 void setup()
 {
-	cli();
-	adc_init();
-	spi_slave_init();
-	//PD0–PD7 como salida
-	DDRD = 0xFF; 
-	PORTD = 0x00;
+	cli();                  // Desactivar interrupciones
+	adc_init();             // Inicializar ADC
+	spi_slave_init();       // Inicializar SPI en modo esclavo
 
-	sei();
+	DDRD = 0xFF;            // LEDs en PD0–PD7 como salida
+	PORTD = 0x00;           // Apagar LEDs al inicio
+
+	sei();                  // Activar interrupciones globales (por si se usan luego)
 }
 
 void mostrar_en_leds(uint8_t valor)
 {
-	PORTD = valor;
+	PORTD = valor;          // Mostrar valor directamente en los LEDs
 }
+
 
 
 
